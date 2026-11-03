@@ -1,1 +1,82 @@
+#include <stdio.h>
 
+unsigned long checks = 0;
+
+/* Original prime checking */
+int original_prime(unsigned long n)
+{
+    checks = 0;
+
+    if (n < 2)
+        return 0;
+
+    for (unsigned long i = 2; i <= n / i; i++)
+    {
+        checks++;
+
+        if (n % i == 0)
+            return 0;
+    }
+
+    return 1;
+}
+
+/* Redesigned prime checking */
+int improved_prime(unsigned long n)
+{
+    checks = 0;
+
+    if (n < 2)
+        return 0;
+
+    if (n == 2)
+        return 1;
+
+    checks++;
+
+    if (n % 2 == 0)
+        return 0;
+
+    for (unsigned long i = 3; i <= n / i; i += 2)
+    {
+        checks++;
+
+        if (n % i == 0)
+            return 0;
+    }
+
+    return 1;
+}
+
+int main()
+{
+    unsigned long numbers[] = {97, 100, 7919, 1000003};
+
+    int i, result;
+
+    printf("Original Implementation\n");
+
+    for (i = 0; i < 4; i++)
+    {
+        result = original_prime(numbers[i]);
+
+        printf("%lu : %s : Checks = %lu\n",
+               numbers[i],
+               result ? "Prime" : "Not Prime",
+               checks);
+    }
+
+    printf("\nImproved Implementation\n");
+
+    for (i = 0; i < 4; i++)
+    {
+        result = improved_prime(numbers[i]);
+
+        printf("%lu : %s : Checks = %lu\n",
+               numbers[i],
+               result ? "Prime" : "Not Prime",
+               checks);
+    }
+
+    return 0;
+}
