@@ -1,1 +1,57 @@
+#include <stdio.h>
 
+int calls = 0;
+
+int verify_card(int card)
+{
+    calls++;
+    return card;
+}
+
+int main()
+{
+    int senior[4] = {1, 1, 0, 0};
+    int eligible[4] = {1, 0, 1, 0};
+    int card[4] = {0, 1, 0, 1};
+
+    int i, result;
+
+    printf("Short Circuit Evaluation:\n");
+
+    calls = 0;
+
+    for (i = 0; i < 4; i++)
+    {
+        result = (senior[i] && eligible[i]) ||
+                 verify_card(card[i]);
+
+        if (result)
+            printf("Passenger %d: CONCESSION\n", i + 1);
+        else
+            printf("Passenger %d: NO CONCESSION\n", i + 1);
+    }
+
+    printf("Function Calls = %d\n", calls);
+
+    calls = 0;
+
+    for (i = 0; i < 4; i++)
+    {
+        result = verify_card(card[i]) ||
+                 (senior[i] && eligible[i]);
+    }
+
+    printf("Verification First Calls = %d\n", calls);
+
+    calls = 0;
+
+    for (i = 0; i < 4; i++)
+    {
+        result = (senior[i] && eligible[i]) |
+                 verify_card(card[i]);
+    }
+
+    printf("Bitwise OR Calls = %d\n", calls);
+
+    return 0;
+}
