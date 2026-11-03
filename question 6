@@ -1,1 +1,77 @@
+#include <stdio.h>
 
+int main()
+{
+    double principal, rate, repayment;
+    double balance, interest;
+    double total_interest = 0;
+    double payment;
+
+    int month = 0;
+    int MAX_MONTHS = 360;
+
+    printf("Enter principal amount: ");
+    scanf("%lf", &principal);
+
+    printf("Enter monthly interest rate: ");
+    scanf("%lf", &rate);
+
+    printf("Enter fixed repayment amount: ");
+    scanf("%lf", &repayment);
+
+    if (principal <= 0 || rate < 0 || repayment <= 0)
+    {
+        printf("Invalid loan details");
+        return 0;
+    }
+
+    balance = principal;
+
+    while (balance > 0.005 && month < MAX_MONTHS)
+    {
+        interest = balance * rate / 100.0;
+
+        if (repayment <= interest)
+        {
+            printf("Repayment is not greater than monthly interest.\n");
+            printf("Loan cannot be repaid with this amount.\n");
+            return 0;
+        }
+
+        balance = balance + interest;
+
+        total_interest += interest;
+
+        if (repayment < balance)
+            payment = repayment;
+        else
+            payment = balance;
+
+        balance = balance - payment;
+
+        month++;
+
+        if (balance < 0.005)
+            balance = 0;
+
+        printf("Month %d\n", month);
+        printf("Interest = %.2f\n", interest);
+        printf("Payment = %.2f\n", payment);
+        printf("Balance = %.2f\n", balance);
+    }
+
+    if (balance <= 0.005)
+    {
+        printf("Loan repaid in %d months\n", month);
+
+        printf("Total Interest = %.2f\n",
+               total_interest);
+    }
+    else
+    {
+        printf("Safety limit reached.\n");
+        printf("Outstanding Balance = %.2f\n", balance);
+    }
+
+    return 0;
+}
